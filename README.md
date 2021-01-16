@@ -58,8 +58,14 @@ echo "FLAG1=123456789
 FLAG2=999999999
 FLAG3=111111111
 PORT=3000">>.env
-# use the envirmental variable file you just created
+
+# OPTIONS
+# 1) use the envirmental variable file you just created
 docker-compose -f docker-compose.local.yml --env-file .\.env up
+# 2) run with docker image prebuild
+docker-compose  --env-file .\.env up
+# 3)
+docker-compose  up -d
 ```
 ## deploy (just docker)
 ###### link about how env files work with docker [Environment variables in Compose | Docker Documentation](https://docs.docker.com/compose/environment-variables/) 
