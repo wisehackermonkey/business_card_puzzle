@@ -4,11 +4,14 @@
 
 
 # change directory:
-    > cd frontend
+```bash
+cd frontend
+```
 
 # install dependencies:
-    > npm install
-
+```bash
+npm install
+```
 # run the app:
 (linux)
 ```bash

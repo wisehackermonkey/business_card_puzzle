@@ -1,2 +1,17 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
+<h1>Oran's Business card Puzzle checker!</h1>
+{{!-- <p>{{title}}</p> --}}
+<p>Instructions:<br>
+    Find the 3 interger numbers hidden within the business card and enter them in here
+    Note: No spaces letters or hex values are accepted. only numbers 888888, 11, or 1234567 are acceptable
+</p>
+
+<input type="number" name="flag1" id="flag1-input-text" placeholder="Numbers only: [0-9][0-9][0-9]+">
+<button onclick="check_flag1()">Check</button>
+
+<br>
+<input type="number" name="flag2" id="flag2-input-text" placeholder="Numbers only: [0-9][0-9][0-9]+">
+<button>Check</button>
+
+<br>
+<input type="number" name="flag3" id="flag3-input-text" placeholder="Numbers only: [0-9][0-9][0-9]+">
+<button>Check</button>
