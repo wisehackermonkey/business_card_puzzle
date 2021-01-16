@@ -135,13 +135,17 @@ router.get('/', (req, res, next) => {
             win:false,
             error:`has duplicate answers!`})
     }
+    
 
     return res.json({
+        // ".some" checks to see if the guess was any of the 3 correct answers
+        // "correct === flag1" this checks if the guess was correct
+
         flag1: CORRECT_FLAGS.some(correct => correct === flag1),
         flag2: CORRECT_FLAGS.some(correct => correct === flag2),
         flag3: CORRECT_FLAGS.some(correct => correct === flag3),
         win: validate.validate_guess(guesses,CORRECT_FLAGS),
-        error: ``
+        error: `${validate.validate_guess(guesses,CORRECT_FLAGS) ?"":"has duplicate answers!"}`
     })
 
 });

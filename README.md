@@ -54,9 +54,9 @@ git clone https://github.com/wisehackermonkey/business_card_puzzle.git
 cd business_card_puzzle/
 touch .env
 # MODIFY THE FLAG values to match your desired values
-echo "FLAG1=3333333333
-FLAG2=2222222222
-FLAG3=1111111111
+echo "FLAG1=123456789
+FLAG2=999999999
+FLAG3=111111111
 PORT=3000">>.env
 # use the envirmental variable file you just created
 docker-compose --env-file .\.env up
@@ -67,9 +67,9 @@ docker-compose --env-file .\.env up
 docker pull wisehackermonkey/businesscardpuzzle:latest
 touch .env
 
-echo "FLAG1=3333333333
-FLAG2=2222222222
-FLAG3=1111111111
+echo "FLAG1=123456789
+FLAG2=999999999
+FLAG3=111111111
 PORT=3000">>.env
 docker run -it -p 3000:3000 --env-file ./.env wisehackermonkey/businesscardpuzzle:latest
 ```
