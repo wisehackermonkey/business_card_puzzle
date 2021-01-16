@@ -112,8 +112,7 @@ router.get('/', (req, res, next) => {
         })
     }
 
-    console.log(process.env.FLAG1)
-    console.log(process.env.FLAG1 === flag1);
+    
 
     // winning flags example url
     // http://localhost:3000/check/?flag1=1234567890&flag2=0987654321&flag3=1111111111
@@ -124,11 +123,11 @@ router.get('/', (req, res, next) => {
     // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
     // flag1 is the number the user entered in on the website and was passed back through
     // a fetch call from the browser
-    correct_guesses = [process.env.FLAG1,process.env.FLAG3,process.env.FLAG3]
+    CORRECT_FLAGS = [process.env.FLAG1,process.env.FLAG2,process.env.FLAG3]
     guesses = [flag1,flag2,flag3]
 
     // if the user entered multple correct answers preventing a false win
-    if(!validate.validate_guess(guesses,correct_guesses)){
+    if(!validate.validate_guess(guesses,CORRECT_FLAGS)){
         return res.json({
             flag1:false,
             flag2:false,
@@ -136,12 +135,12 @@ router.get('/', (req, res, next) => {
             win:false,
             error:`has duplicate answers!`})
     }
-    win = false;
+
     return res.json({
         flag1: CORRECT_FLAGS.some(correct => correct === flag1),
         flag2: CORRECT_FLAGS.some(correct => correct === flag2),
         flag3: CORRECT_FLAGS.some(correct => correct === flag3),
-        win: process.env.FLAG1 === flag1 && process.env.FLAG2 === flag2 && process.env.FLAG3 === flag3,
+        win: validate.validate_guess(guesses,CORRECT_FLAGS),
         error: ``
     })
 
