@@ -1,0 +1,29 @@
+{
+  "name": "business_card_puzzle",
+  "version": "1.0.0",
+  "description": "business card puzzle website",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wisehackermonkey/business_card_puzzle.git"
+  },
+  "keywords": [
+    "puzzle",
+    "checker",
+    "one",
+    "off"
+  ],
+  "author": "wisehackermonkey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wisehackermonkey/business_card_puzzle/issues"
+  },
+  "homepage": "https://github.com/wisehackermonkey/business_card_puzzle#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "sanitize": "^2.1.0"
+  }
+}
