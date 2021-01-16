@@ -1,26 +1,6 @@
-// validate that the user is submitting a unieque and correct answer
-let validate_guess = (guesses,correct_flags) => {
-    
-    // weed out duplate answers 
-   if(!is_unique_array(guesses)) {
-       return false
-   }
-
-   
-}
-
-// check if the array is uneque
-let is_unique_array = (array)=>{
-    temp = array.filter(onlyUnique)
-    return temp.length >=array.length
-}
-// helper function
-// Get all unique values in a JavaScript array (remove duplicates)
-// https://stackoverflow.com/a/14438954/5460870
-let onlyUnique = (value, index, self) => {
-    return self.indexOf(value) === index;
-}
-// helper function
+// link https://stackoverflow.com/a/14853974/5460870
+// helper function 
+// checks to see if two arrays are the same
 Object.prototype.equals = function(object2) {
     //For the first loop, we only check for types
     for (propName in this) {
@@ -73,6 +53,25 @@ Object.prototype.equals = function(object2) {
     //If everything passed, let's say YES
     return true;
 }  
+// validate that the user is submitting a unieque and correct answer
+let validate_guess = (guesses, correct_flags) => {
+    
+   return guesses.equals(correct_flags) === true
+
+   
+}
+
+// check if the array is uneque
+let is_unique_array = (array)=>{
+    temp = array.filter(onlyUnique)
+    return temp.length >=array.length
+}
+// helper function
+// Get all unique values in a JavaScript array (remove duplicates)
+// https://stackoverflow.com/a/14438954/5460870
+let onlyUnique = (value, index, self) => {
+    return self.indexOf(value) === index;
+}
 module.exports = {
     onlyUnique,
     validate_guess,

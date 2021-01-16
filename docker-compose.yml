@@ -2,6 +2,8 @@ version: '3.4'
 
 services:
   businesscardpuzzle:
+    env_file: 
+      - .env
     image: businesscardpuzzle
     build:
       context: .
@@ -9,4 +11,4 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 3000:80
+      - 3000:3000

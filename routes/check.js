@@ -124,10 +124,11 @@ router.get('/', (req, res, next) => {
     // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
     // flag1 is the number the user entered in on the website and was passed back through
     // a fetch call from the browser
-    
-    
+    correct_guesses = [process.env.FLAG1,process.env.FLAG3,process.env.FLAG3]
+    guesses = [flag1,flag2,flag3]
+
     // if the user entered multple correct answers preventing a false win
-    if(has_duplicatate_numbers){
+    if(!validate.validate_guess(guesses,correct_guesses)){
         return res.json({
             flag1:false,
             flag2:false,
