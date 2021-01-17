@@ -22,6 +22,10 @@ SET DEBUG=frontend:* & npm start
 $env:DEBUG='frontend:*'; npm start
 ```
 
+# how to run tests
+```bash
+npm run test
+```
 # TODO
 - [x] add audio when you win via webaudio api
 - [ ] add email me when someone wins

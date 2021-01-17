@@ -1,6 +1,6 @@
 require('dotenv').config()
 var express = require('express');
-
+const validate = require("./validations");
 var router = express.Router();
 // explanation of regex https://regexr.com/5kd6h
 
@@ -124,11 +124,7 @@ router.get('/', (req, res, next) => {
     // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
     // flag1 is the number the user entered in on the website and was passed back through
     // a fetch call from the browser
-    CORRECT_FLAGS = [process.env.FLAG1, process.env.FLAG2, process.env.FLAG3]
     
-    // weed out duplate answers 
-    guesses = [flag1,flag2,flag3].filter(onlyUnique)
-    has_duplicatate_numbers = guesses.length >=3
     
     // if the user entered multple correct answers preventing a false win
     if(has_duplicatate_numbers){
@@ -164,11 +160,4 @@ router.get("/flag", (req, res, next) => {
     });
 });
 
-
-// helper function
-// Get all unique values in a JavaScript array (remove duplicates)
-// https://stackoverflow.com/a/14438954/5460870
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
 module.exports = router;
