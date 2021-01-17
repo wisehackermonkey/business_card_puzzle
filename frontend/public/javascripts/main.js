@@ -16,7 +16,8 @@ console.log("Loading main script...")
 const checkFlags = async () => {
     try {
         // grabs the value from the button for entering flag1
-        flag1 = document.getElementById("flag1-input-text").value
+        flag1_id = document.getElementById("flag1-input-text")
+        flag1 = flag1_id.value
         // flag2
         // flag3 = 
 
@@ -37,7 +38,18 @@ const checkFlags = async () => {
         console.log(server_url)
         console.log(flag1)
 
-        
+    
+        // change the ui to reflect the update
+
+        // if the guess was correct change the color of the input box to be
+        // green if false red
+        if(json_result.flag1 == true){
+            console.log("Flag 1 is true!")
+            flag1_id.style = "background: green;";
+        }else if(json_result.flag1 == false){
+            flag1_id.style = "background: red;";
+        }
+
     } catch (e) {
         console.log(`Error:${e}`)
     }

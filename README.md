@@ -21,3 +21,6 @@ SET DEBUG=frontend:* & npm start
 ```bash
 $env:DEBUG='frontend:*'; npm start
 ```
+
+# TODO
+- [ ] add audio when you win via webaudio api

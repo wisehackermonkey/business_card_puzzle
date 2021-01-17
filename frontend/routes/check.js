@@ -22,39 +22,55 @@ const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
 // NOTE: flag: is defined as a string that is hidden in a cybersecurity challenge
 // and when its found the flag is entered into a website and you see if you win.
 router.get('/', function (req, res, next) {
-
+    
     // error checking to see if you added the 3 parmaters flag1,flag2,flag3
     console.log(req.query)
     // link:
     // https://bytenota.com/javascript-check-if-url-contains-query-string/
     // scroll to the part about 2. Use Regex to check a given URL
     if (!RegExp(QUERY_STRING_EXISTS_REGEX, "g").test(req.url)) {
-        return res.render('error', {
-            message: `ERROR: flagX paramater not found ex: localhost:3000/?flag1=1336`
-        });
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `ERROR: flagX paramater not found ex: localhost:3000/?flag1=1336`
+        })
 
     }
 
     // validate that the flag1 paramater actually exists in the url
     if (!req.query.flag1) {
         console.log("flag1 not found")
-        return res.render('error', {
-            message: `Error flag1 was not found in query`
-        });
+    
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `Error flag1 was not found in query`
+        })
     }
     if (!req.query.flag2) {
         console.log("flag2 not found")
-
-        return res.render('error', {
-            message: `Error flag2 was not found in query`
-        });
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `Error flag2 was not found in query`
+        })
     }
     if (!req.query.flag3) {
         console.log("flag2 not found")
 
-        return res.render('error', {
-            message: `Error flag3 was not found in query`
-        });
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `Error flag3 was not found in query`
+        })
     }
 
     // grab the '1337' veriable part of '?flag1=1337' for reach flag
@@ -62,42 +78,59 @@ router.get('/', function (req, res, next) {
     const flag2 = req.query?.flag2;
     const flag3 = req.query?.flag3;
 
+    // user input validation
+    // check if the flag's characters are only numbers
     if (!RegExp(NUMBERS_ONLY_REGEX, 'g').test(flag1)) {
-        return res.render('error', {
-            message: `Error number was not entered for 'flag1':"${flag1}" is not a number`
-        });
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `Error number was not entered for'flag1':"${flag1}" is not a number`
+        })
     }
 
     if (!RegExp(NUMBERS_ONLY_REGEX, 'g').test(flag2)) {
-        return res.render('error', {
-            message: `Error number was not entered for 'flag2':"${flag2}" is not a number`
-        });
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error: `Error number was not entered for 'flag2':"${flag2}" is not a number`
+        })
     }
 
 
     if (!RegExp(NUMBERS_ONLY_REGEX, 'g').test(flag3)) {
-        return res.render('error', {
-            message: `Error number was not entered for 'flag3':"${flag3}" is not a number`
-        });
+
+        return res.json({
+            flag1: null,
+            flag2: null,
+            flag3: null,
+            win: null,
+            error:  `Error number was not entered for 'flag3':"${flag3}" is not a number`
+        })
     }
 
-    // check if the user actually got all the ones correctly!
     console.log(process.env.FLAG1)
-    // if(process.env)
     console.log(process.env.FLAG1 == flag1);
-
+    
     // winning flags example url
     // http://localhost:3000/check/?flag1=1234567890&flag2=0987654321&flag3=1111111111
-    res.json({
+    
+    // check if the user actually got all the ones correctly!
+
+    //explenation "process.env.FLAG1 == flag1" grabs the winning number from a 
+    // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
+    // flag1 is the number the user entered in on the website and was passed back through
+    // a fetch call from the browser
+    return res.json({
         flag1: process.env.FLAG1 == flag1,
         flag2: process.env.FLAG2 == flag2,
         flag3: process.env.FLAG3 == flag3,
-        win:  process.env.FLAG1 == flag1 && process.env.FLAG2 == flag2 && process.env.FLAG3 == flag3
+        win: process.env.FLAG1 == flag1 && process.env.FLAG2 == flag2 && process.env.FLAG3 == flag3,
+        error: ``
     })
-    //   res.send('respond with a resource');
-    return res.render('index', {
-        title: "Puzzle"
-    });
 
 });
 
