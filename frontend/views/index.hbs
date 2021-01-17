@@ -18,14 +18,22 @@
 <p>Instructions:<br>
     Find the 3 interger numbers hidden within the business card and enter them in here
     Note: No spaces letters or hex values are accepted. only numbers 888888, 11, or 1234567 are acceptable
+    Note: Each number is unique, no duplicates.
+    Note: no zero padded numbers like 000003 or 0000245 would just be 3, and 245
 </p>
 
 <input type="number" name="flag1" id="flag1-input-text" placeholder="Numbers only [0-9]+" value="0">
+<button onclick="checkFlag(1)"> Check </button>
 <br>
+
 <input type="number" name="flag2" id="flag2-input-text" placeholder="Numbers only [0-9]+" value="0">
+<button onclick="checkFlag(2)"> Check </button>
 <br>
+
 <input type="number" name="flag3" id="flag3-input-text" placeholder="Numbers only [0-9]+" value="0">
+<button onclick="checkFlag(3)"> Check </button>
 <br>
-<button onclick="checkFlags()">Check Flags!</button>
+
+<button onclick="checkAllFlags()">Check Flags!</button>
 <h1 id="win_text"></h1>
 

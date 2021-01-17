@@ -13,7 +13,7 @@ console.log("Loading main script...")
 // flag
 // checkFlags() grabs the 3 input boxes values and sends a fetch to the server
 
-const checkFlags = async () => {
+const checkAllFlags = async () => {
     try {
         // grabs the value from the button for entering flag1
         flag1_id = document.getElementById("flag1-input-text")
@@ -48,42 +48,110 @@ const checkFlags = async () => {
         // if the guess was correct change the color of the input box to be
         // green if false red
         if (json_result.flag1 == true) {
-            flag1_id.style = "background: green;";
+            flag1_id.style = "background: lightgreen";
         } else if (json_result.flag1 == false) {
-            flag1_id.style = "background: red;";
+            flag1_id.style = "background: LightCoral;";
         }
 
         if (json_result.flag2 == true) {
-            flag2_id.style = "background: green;";
+            flag2_id.style = "background: lightgreen";
         } else if (json_result.flag2 == false) {
-            flag2_id.style = "background: red;";
+            flag2_id.style = "background: LightCoral;";
         }
 
         if (json_result.flag3 == true) {
-            flag3_id.style = "background: green;";
+            flag3_id.style = "background: lightgreen";
         } else if (json_result.flag3 == false) {
-            flag3_id.style = "background: red;";
+            flag3_id.style = "background: LightCoral;";
         }
 
 
         if (json_result.flag1 == true && json_result.flag1 == true & json_result.flag1 == true) {
             // source for the win sound is https://freesound.org/people/Mativve/sounds/391540/
-            const win_sound_fx = new Audio("/sound/mativve_electro-success-sound.wav")
-            win_sound_fx.play();
+            play_win_fx();
+            play_win_fx("sandermotions_applause-3.wav")
+            play_win_fx("dersuperanton__congratulations-deep-voice.wav");
+            
+
             win_text_id.innerHTML = "You won! to collect the $100 from oran please contact at oranbusiness@gmail.com"
+            // make text blink! every .2 seconds
+            var f = win_text_id
+            id = setInterval(function() {
+                f.style.display = (f.style.display == 'none' ? '' : 'none');
+            }, 200);
+
+            // top the blinking after 2 seconds
+            setTimeout(()=>{  f.style.display =""; clearInterval(id)}, 1000)
             // if the
         } else if (flag1.length === 0) {
             win_text_id.innerHTML = "Please enter a guess."
 
         } else {
             win_text_id.innerHTML = "That wasn't correct, please try again."
-            // source https://freesound.org/people/OwlStorm/sounds/404743/
-            const fail_fx = new Audio("/sound/owlstorm-retro-video-game-sfx-fail.wav");
-            // source https://freesound.org/people/iut_Paris8/sounds/428639/
-            // const fail_fx = new Audio("/sound/iut-paris8-quillard-charles-2018-gatecoin.wav");
-            fail_fx.play();
+            play_fail_fx();
         }
 
+    } catch (e) {
+        console.log(`Error:${e}`)
+    }
+}
+
+// plays a electronic win sound effect in the browser
+// source for the win sound is https://freesound.org/people/Mativve/sounds/391540/
+const play_win_fx = (option)=>{
+    option = option ? "/sound/"+option: ""
+    sound_url = option ||"/sound/mativve_electro-success-sound.wav"
+    const win_sound_fx = new Audio(sound_url)
+    win_sound_fx.play();
+}
+// plays sound effect for failed guesses
+// source https://freesound.org/people/iut_Paris8/sounds/428639/
+// source https://freesound.org/people/OwlStorm/sounds/404743/
+const play_fail_fx = (option) =>{
+    option = option ? "/sound/"+option: ""
+
+    sound_url = option || "/sound/owlstorm-retro-video-game-sfx-fail.wav"
+     const fail_fx = new Audio(sound_url);
+     // const fail_fx = new Audio("iut-paris8-quillard-charles-2018-gatecoin.wav");
+     fail_fx.play();
+}
+
+// checks all 3 flag input fields dynamically by 
+// <button onclick="checkFlag(3)"> Check </button>
+// using hardcoded number parapter into the buttons onclick function
+// checkFlag(3) = grabs flag's input and asks the server if that number ex: 1000 is correct
+// server returns json with 
+// {
+//     is_correct: true/false,
+//     error: ``
+// } 
+// if is_correct is false turn color of input field green indicating success
+// if is_correct is false turn color of input field red indicating fail
+
+const checkFlag = async (flag_num) => {
+
+    flag_id = document.getElementById(`flag${flag_num}-input-text`);
+
+    // example url http://localhost:80/check/flag2/?value=888888888888
+    server_endpoint_url = `/check/flag/?value=${flag_id.value}`
+    try {
+        // wait for the server to respond then wait for the first promise to finish
+        // thats why there is nested await await
+        result = await (await fetch(server_endpoint_url)).json()
+
+
+        if (result.is_correct == true) {
+            flag_id.style = "background: lightgreen";
+            //source of sound https://freesound.org/people/troym1/sounds/325444/
+            play_win_fx("sailorerick_magical-hit.m4a"/*troym1__correct.mp3"*/);
+        } else if (result.is_correct == false) {
+            flag_id.style = "background: LightCoral;";
+            play_fail_fx();
+        }
+        // Debug statements
+        console.log(result)
+        console.log(flag_num);
+        console.log(flag_id.value)
     } catch (e) {
         console.log(`Error:${e}`)
     }

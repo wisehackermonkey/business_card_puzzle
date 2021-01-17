@@ -21,8 +21,8 @@ const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
 
 // NOTE: flag: is defined as a string that is hidden in a cybersecurity challenge
 // and when its found the flag is entered into a website and you see if you win.
-router.get('/', function (req, res, next) {
-    
+router.get('/', (req, res, next) => {
+
     // error checking to see if you added the 3 parmaters flag1,flag2,flag3
     console.log(req.query)
     // link:
@@ -42,7 +42,7 @@ router.get('/', function (req, res, next) {
     // validate that the flag1 paramater actually exists in the url
     if (!req.query.flag1) {
         console.log("flag1 not found")
-    
+
         return res.json({
             flag1: null,
             flag2: null,
@@ -108,30 +108,67 @@ router.get('/', function (req, res, next) {
             flag2: null,
             flag3: null,
             win: null,
-            error:  `Error number was not entered for 'flag3':"${flag3}" is not a number`
+            error: `Error number was not entered for 'flag3':"${flag3}" is not a number`
         })
     }
 
     console.log(process.env.FLAG1)
     console.log(process.env.FLAG1 === flag1);
-    
+
     // winning flags example url
     // http://localhost:3000/check/?flag1=1234567890&flag2=0987654321&flag3=1111111111
-    
+
     // check if the user actually got all the ones correctly!
 
     //explenation "process.env.FLAG1 === flag1" grabs the winning number from a 
     // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
     // flag1 is the number the user entered in on the website and was passed back through
     // a fetch call from the browser
+    CORRECT_FLAGS = [process.env.FLAG1, process.env.FLAG2, process.env.FLAG3]
+    
+    // weed out duplate answers 
+    guesses = [flag1,flag2,flag3].filter(onlyUnique)
+    has_duplicatate_numbers = guesses.length >=3
+    
+    // if the user entered multple correct answers preventing a false win
+    if(has_duplicatate_numbers){
+        return res.json({
+            flag1:false,
+            flag2:false,
+            flag3:false,
+            win:false,
+            error:`has duplicate answers!`})
+    }
+    win = false;
     return res.json({
-        flag1: process.env.FLAG1 === flag1,
-        flag2: process.env.FLAG2 === flag2,
-        flag3: process.env.FLAG3 === flag3,
+        flag1: CORRECT_FLAGS.some(correct => correct === flag1),
+        flag2: CORRECT_FLAGS.some(correct => correct === flag2),
+        flag3: CORRECT_FLAGS.some(correct => correct === flag3),
         win: process.env.FLAG1 === flag1 && process.env.FLAG2 === flag2 && process.env.FLAG3 === flag3,
         error: ``
     })
 
 });
 
+// allows for checking just 1 flag at a time
+router.get("/flag", (req, res, next) => {
+
+    guess_val = req.query.value;
+    // this is kinda complicated,
+    // it allows me to check if 111111 is one of the 3 flags stored in the enviorment variables (for security)
+    // it asks the question is 23242342 on of [1233333,44444,238383] => true or false
+    is_correct_flag = [process.env.FLAG1, process.env.FLAG2, process.env.FLAG3].some(x => x === guess_val)
+    return res.json({
+        is_correct: is_correct_flag,
+        error: ``
+    });
+});
+
+
+// helper function
+// Get all unique values in a JavaScript array (remove duplicates)
+// https://stackoverflow.com/a/14438954/5460870
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
 module.exports = router;
