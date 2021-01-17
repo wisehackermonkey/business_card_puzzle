@@ -11,8 +11,8 @@ const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
 
 // checks the validity of the flags
 // checks to see if the flags are correct ex:
-// from user "2340956" == actual "499999" NOPE!
-// from user "499999" == actual "499999" YEP!
+// from user "2340956" === actual "499999" NOPE!
+// from user "499999" === actual "499999" YEP!
 // each flag is passed in as a query paramter
 
 // http://localhost:3000/check/?flag1=1337 [..sniped for brevity...]
@@ -113,22 +113,22 @@ router.get('/', function (req, res, next) {
     }
 
     console.log(process.env.FLAG1)
-    console.log(process.env.FLAG1 == flag1);
+    console.log(process.env.FLAG1 === flag1);
     
     // winning flags example url
     // http://localhost:3000/check/?flag1=1234567890&flag2=0987654321&flag3=1111111111
     
     // check if the user actually got all the ones correctly!
 
-    //explenation "process.env.FLAG1 == flag1" grabs the winning number from a 
+    //explenation "process.env.FLAG1 === flag1" grabs the winning number from a 
     // enviornamental variable set in /frontend/.env which is ex:FLAG1=234567
     // flag1 is the number the user entered in on the website and was passed back through
     // a fetch call from the browser
     return res.json({
-        flag1: process.env.FLAG1 == flag1,
-        flag2: process.env.FLAG2 == flag2,
-        flag3: process.env.FLAG3 == flag3,
-        win: process.env.FLAG1 == flag1 && process.env.FLAG2 == flag2 && process.env.FLAG3 == flag3,
+        flag1: process.env.FLAG1 === flag1,
+        flag2: process.env.FLAG2 === flag2,
+        flag3: process.env.FLAG3 === flag3,
+        win: process.env.FLAG1 === flag1 && process.env.FLAG2 === flag2 && process.env.FLAG3 === flag3,
         error: ``
     })
 

@@ -23,8 +23,7 @@ const checkFlags = async () => {
         flag1 = flag1_id.value
         flag2 = flag2_id.value
         flag3 = flag3_id.value
-        // flag2
-        // flag3 = 
+
 
         // note: "document.domain" gets the current url domain ex: document.domain = localhost
         // note: "location.port || 80" means if the port is not a custom on line 3000 which is used during 
@@ -66,18 +65,23 @@ const checkFlags = async () => {
             flag3_id.style = "background: red;";
         }
 
-        
+
         if (json_result.flag1 == true && json_result.flag1 == true & json_result.flag1 == true) {
             // source for the win sound is https://freesound.org/people/Mativve/sounds/391540/
             const win_sound_fx = new Audio("/sound/mativve_electro-success-sound.wav")
             win_sound_fx.play();
             win_text_id.innerHTML = "You won! to collect the $100 from oran please contact at oranbusiness@gmail.com"
-        }else if(flag1.length ===0){
+            // if the
+        } else if (flag1.length === 0) {
             win_text_id.innerHTML = "Please enter a guess."
 
-        }else{
+        } else {
             win_text_id.innerHTML = "That wasn't correct, please try again."
-
+            // source https://freesound.org/people/OwlStorm/sounds/404743/
+            const fail_fx = new Audio("/sound/owlstorm-retro-video-game-sfx-fail.wav");
+            // source https://freesound.org/people/iut_Paris8/sounds/428639/
+            // const fail_fx = new Audio("/sound/iut-paris8-quillard-charles-2018-gatecoin.wav");
+            fail_fx.play();
         }
 
     } catch (e) {

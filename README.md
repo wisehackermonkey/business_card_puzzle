@@ -26,3 +26,4 @@ $env:DEBUG='frontend:*'; npm start
 - [x] add audio when you win via webaudio api
 - [ ] add email me when someone wins
 - [] fail sound 
+- [] sound toggle use input:checkbox
