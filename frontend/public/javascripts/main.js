@@ -66,11 +66,18 @@ const checkFlags = async () => {
             flag3_id.style = "background: red;";
         }
 
+        
         if (json_result.flag1 == true && json_result.flag1 == true & json_result.flag1 == true) {
             // source for the win sound is https://freesound.org/people/Mativve/sounds/391540/
             const win_sound_fx = new Audio("/sound/mativve_electro-success-sound.wav")
             win_sound_fx.play();
             win_text_id.innerHTML = "You won! to collect the $100 from oran please contact at oranbusiness@gmail.com"
+        }else if(flag1.length ===0){
+            win_text_id.innerHTML = "Please enter a guess."
+
+        }else{
+            win_text_id.innerHTML = "That wasn't correct, please try again."
+
         }
 
     } catch (e) {
