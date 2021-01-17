@@ -1,4 +1,6 @@
+require('dotenv').config()
 var express = require('express');
+
 var router = express.Router();
 // explanation of regex https://regexr.com/5kd6h
 
@@ -30,7 +32,7 @@ router.get('/', function (req, res, next) {
         return res.render('error', {
             message: `ERROR: flagX paramater not found ex: localhost:3000/?flag1=1336`
         });
-        
+
     }
 
     // validate that the flag1 paramater actually exists in the url
@@ -78,8 +80,20 @@ router.get('/', function (req, res, next) {
             message: `Error number was not entered for 'flag3':"${flag3}" is not a number`
         });
     }
-    
 
+    // check if the user actually got all the ones correctly!
+    console.log(process.env.FLAG1)
+    // if(process.env)
+    console.log(process.env.FLAG1 == flag1);
+
+    // winning flags example url
+    // http://localhost:3000/check/?flag1=1234567890&flag2=0987654321&flag3=1111111111
+    res.json({
+        flag1: process.env.FLAG1 == flag1,
+        flag2: process.env.FLAG2 == flag2,
+        flag3: process.env.FLAG3 == flag3,
+        win:  process.env.FLAG1 == flag1 && process.env.FLAG2 == flag2 && process.env.FLAG3 == flag3
+    })
     //   res.send('respond with a resource');
     return res.render('index', {
         title: "Puzzle"
