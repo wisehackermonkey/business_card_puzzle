@@ -23,4 +23,6 @@ $env:DEBUG='frontend:*'; npm start
 ```
 
 # TODO
-- [ ] add audio when you win via webaudio api
+- [x] add audio when you win via webaudio api
+- [ ] add email me when someone wins
+- [] fail sound 
