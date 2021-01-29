@@ -28,11 +28,27 @@ npm run test
 ```
 
 # docker 
-## build locally
+### build locally
 ```bash
 docker build -t wisehackermonkey/businesscardpuzzle .
+docker login
 docker push wisehackermonkey/businesscardpuzzle:latest
 ```
+
+### build locally (docker-compose)
+```bash
+cd /path/to/project/dir/
+docker-compose -f docker-compose.local.yml build
+docker-compose -f docker-compose.local.yml up
+```
+
+# docker publish
+### Docker push image docker hub
+```bash
+docker login
+docker push wisehackermonkey/businesscardpuzzle:latest
+```
+
 ## setup
 #### create a file called .env 
 ##### with the contents Similar to this NOTE: flags must be unique
@@ -46,6 +62,9 @@ PORT=3000
 ## run 
 ```bash
 docker-compose --env-file .\.env build
+
+docker-compose  up
+OR 
 docker-compose --env-file .\.env up
 ```
 ## deploy (docker-compose)
@@ -58,13 +77,20 @@ echo "FLAG1=123456789
 FLAG2=999999999
 FLAG3=111111111
 PORT=3000">>.env
-
+```
 # OPTIONS
-# 1) use the envirmental variable file you just created
+
+### 1) use the envirmental variable file you just created
+```bash
 docker-compose -f docker-compose.local.yml --env-file .\.env up
-# 2) run with docker image prebuild
+```
+
+### 2) run with docker image prebuild
+```bash
 docker-compose  --env-file .\.env up
+```
 # 3)
+```bash
 docker-compose  up -d
 ```
 ## deploy (just docker)
