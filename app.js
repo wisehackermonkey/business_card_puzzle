@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let favicon = require('serve-favicon');
+
 // logging users so i can see where there comming
 let  winston = require('winston');
 let expressWinston = require('express-winston');
@@ -12,6 +13,8 @@ let expressWinston = require('express-winston');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var checkRouter = require('./routes/check');
+
+
 
 var app = express();
 app.use(expressWinston.logger({

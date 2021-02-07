@@ -1,8 +1,13 @@
 require('dotenv').config()
 var express = require('express');
 const validate = require("./validations");
-var router = express.Router();
+const rateLimit = require("express-rate-limit");
 
+var router = express.Router();
+const apiLimiter  = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+  });
 // explanation of regex https://regexr.com/5kd6h
 const NUMBERS_ONLY_REGEX = /^([0-9]+)$/g
 // explanation 
@@ -21,7 +26,7 @@ const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
 
 // NOTE: flag: is defined as a string that is hidden in a cybersecurity challenge
 // and when its found the flag is entered into a website and you see if you win.
-router.get('/', (req, res, next) => {
+router.get('/', apiLimiter, (req, res, next) => {
     // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     // console.log(`User came in on ip: ${ip}`)
     // console.log( req.headers)

@@ -262,6 +262,20 @@ docker run -it \
 ```bash
 docker run --detach --volume=/var/run/docker.sock:/var/run/docker.sock -p 8080:8080 amir20/dozzle
 ```
+
+# Rate Limiting
+### how to test ratelimiting 
+#### install "hey" [rakyll/hey: HTTP load generator, ApacheBench (ab) replacement, formerly known as rakyll/boom](https://github.com/rakyll/hey)
+```bash
+hey -n 1000 -c 100 http://localhost:3000/check/?flag1=1337&flag2=1337&flag3=1337
+
+For my website
+hey -n 1000 -c 100 http://www.orancollins.com:3000/check/?flag1=1337&flag2=1337&flag3=1337
+with url encoding
+hey -n 1000 -c 100   http://www.orancollins.com:3000/check/?flag1=1337%26flag2=1337%26flag=1337
+```
+### results it works! 900 out of 1000 went to 'sorry you have been ratelimited'
+![](Screenshot_1.png)
 # TODO
 - [x] add audio when you win via webaudio api
 - [ ] add email me when someone wins
