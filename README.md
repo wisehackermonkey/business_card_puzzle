@@ -264,9 +264,13 @@ docker run --detach --volume=/var/run/docker.sock:/var/run/docker.sock -p 8080:8
 ```
 
 # Rate Limiting
-### how to test ratelimiting 
+### made possible with : [express-rate-limit - npm](https://www.npmjs.com/package/express-rate-limit) which was super easy!!!
+### how to test ratelimiting  
 #### install "hey" [rakyll/hey: HTTP load generator, ApacheBench (ab) replacement, formerly known as rakyll/boom](https://github.com/rakyll/hey)
 ```bash
+### on server
+docker-compose -f docker-compose.local.yml up
+### on another computer
 hey -n 1000 -c 100 http://localhost:3000/check/?flag1=1337&flag2=1337&flag3=1337
 
 For my website
