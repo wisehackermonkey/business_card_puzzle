@@ -105,9 +105,167 @@ FLAG3=111111111
 PORT=3000">>.env
 docker run -it -p 3000:3000 --env-file ./.env wisehackermonkey/businesscardpuzzle:latest
 ```
+
+# Logging the application
+## try 1
+## [Centralize Your Docker Logging With Syslog ](https://medium.com/better-programming/docker-centralized-logging-with-syslog-97b9c147bd30)
+```bash
+sudo apt install rsyslog rsyslog-doc
+code /etc/rsyslog.conf
+
+added
+$ModLoad imtcp $InputTCPServerRun 514
+$imjournalRatelimitInterval 0
+$imjournalRatelimitBurst 0
+code /etc/systemd/journald.conf
+
+mkdir -p /root/logs
+code /etc/rsyslog.d/docker_daemon.conf
+"
+$template DockerLogs, "/root/logs/daemon.log"
+if $programname startswith 'dockerd' then -?DockerLogs
+& stop
+"
+code /etc/rsyslog.d/docker_container.conf
+"
+DockerContainerLogs,"/root/logs/%hostname%_%syslogtag:R,ERE,1,ZERO:.*container_name/([^\[]+)--end%.log"
+if $syslogtag contains 'container_name'  then -?DockerContainerLogs
+& stop
+"
+```
+## try 2
+### 
+```bash
+git clone https://github.com/m0wfo/le-docker.git
+cd le-docker/
+docker build -t le/example .
+docker run -i -t le/example /bin/bash
+
+```
+
+## try 3
+### docker file
+```bash
+FROM ubuntu
+RUN apt update && apt install rsyslog -y
+RUN echo '$ModLoad imudp \n\
+$UDPServerRun 514 \n\
+$ModLoad imtcp \n\
+$InputTCPServerRun 514 \n\
+$template RemoteStore, "/var/log/remote/%$year%/%$Month%/%$Day%/%$Hour%.log" \n\
+:source, !isequal, "localhost" -?RemoteStore \n\
+:source, isequal, "last" ~ ' > /etc/rsyslog.conf
+ENTRYPOINT ["rsyslogd", "-n"]
+```
+### run
+```bash
+docker build -t mysyslog .
+
+docker run  --cap-add SYSLOG --restart always -v /var/log:/var/log -p 514:514 -p 514:514/udp --name rsyslog mysyslog
+```
+#### 
+```bash
+--cap-add SYSLOG --> Allow container to perform privileged syslog(2) operations.
+--restart always --> Restart container regardless of the exit status
+-v /var/log:/var/log --> Mount host /var/log directory in container /var/log directory 
+-p 514:514         --> Bind Host TCP 514 port to contaainer TCP 514 port 
+-p 514:514/udp     --> Bind Host UDP 514 port to contaainer UDP 514 port
+```
+
+#### add to docker compose
+```bash
+syslogserver: 
+    image: mysyslog 
+    hostname: syslog 
+    container_name: syslog 
+    restart: always
+    volumes: 
+      - "/var/log:/var/log" 
+    ports: 
+      - 514:514
+      - 514:514/udp
+    cap_add:
+      - SYSLOG
+```
+### run
+```bash
+docker-compose down
+docker-compose build
+docker-compose up
+docker run --log-driver syslog --log-opt syslog-address=tcp://localhost:514 alpine echo hello world
+
+```
+### installing ui 
+```bash
+docker run -it -e SYSLOG_USERNAME=admin -e SYSLOG_PASSWORD=1234 -p 8080:80 -p 514:514/udp pbertera/syslogserver
+```
+### adding log driver to may conainer
+```bash
+version: '3.4'
+
+services:
+  businesscardpuzzle:
+<--snip-->
+    logging:
+      driver: "syslog"
+      options:
+        syslog-address: 'tcp://localhost:514'
+
+  syslogserver:
+      restart: always
+      env_file: 
+        - .env
+      ports:
+          - '7331:80'
+          - '514:514/udp'
+      image: pbertera/syslogserver
+```
+#### 
+```bash
+docker-compose down
+docker-compose up
+ code docker-compose.logs.yml
+```
+#### 
+```bash
+version: '3.4'
+
+services:
+  syslogserver:
+      restart: always
+      env_file: 
+        - .env
+      ports:
+          - '8080:80'
+          - '514:514/udp'
+      image: pbertera/syslogserver
+```
+##### 
+```bash
+docker-compose --file docker-compose.logs.yml up -d
+docker-compose up
+```
+## try 4
+####
+```bash
+docker run -it \
+  --name=logarr \
+  --restart=on-failure \
+  -v ${PWD}/config:/config \
+  -v ${PWD}/logs:/var/log/logarrlogs \
+  -e TZ=America/Los_Angeles \
+  -p 6666:80 \
+  monitorr/logarr
+```
+## try 5
+###
+```bash
+docker run --detach --volume=/var/run/docker.sock:/var/run/docker.sock -p 8080:8080 amir20/dozzle
+```
 # TODO
 - [x] add audio when you win via webaudio api
 - [ ] add email me when someone wins
 - [x] fail sound 
 - [] sound toggle use input:checkbox
-- [] fix order check issue
+- [x] fix order check issue
+- [] add logging

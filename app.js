@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let favicon = require('serve-favicon');
+// logging users so i can see where there comming
+let  winston = require('winston');
+let expressWinston = require('express-winston');
 
 
 var indexRouter = require('./routes/index');
@@ -11,10 +14,33 @@ var usersRouter = require('./routes/users');
 var checkRouter = require('./routes/check');
 
 var app = express();
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.Console()
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  )
+}));
+var router = express.Router();
+app.use(router);
 
+// express-winston errorLogger makes sense AFTER the router.
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console()
+  ],
+  format: winston.format.combine(
+    winston.format.colorize(),
+    winston.format.json()
+  )
+}));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+// fix for getting the ip address of users
+app.set('trust proxy', true);
 
 app.use(logger('dev'));
 app.use(express.json());

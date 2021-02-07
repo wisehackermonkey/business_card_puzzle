@@ -12,14 +12,22 @@
    '.          .'
      '-......-'    
  -->
+<!-- btw all the checking is done within the server, there is no client side magic string to find just though you'd want to know -->
 <!-- But if you do figure it out this way please tell me! id love to know! (smiley face emoji) -->
 <h1>Oran's Business card Puzzle checker!</h1>
 {{!-- <p>{{title}}</p> --}}
 <p>Instructions:<br>
-    Find the 3 interger numbers hidden within the business card and enter them in here
-    Note: No spaces letters or hex values are accepted. only numbers 888888, 11, or 1234567 are acceptable
+    Find the 3 interger numbers hidden within the business card and enter them in here:
+    <br>
+    Note: No spaces letters or hex values are accepted. example: only numbers like 888888, 11, or 1234567 are acceptable
+    <br>
     Note: Each number is unique, no duplicates.
-    Note: no zero padded numbers like 000003 or 0000245 would just be 3, and 245
+    <br>
+    Note: Numbers are not negative
+    <br>
+    Note: no zero padded numbers like 00003 or 0000245 would just be 3, and 245
+    <br>
+    Note: 'check' button checks a number, and "check flags" checks to see if you got all the numbers,[i didnt feel like changeing the code so just click the check flags if you got everything righ :)]
 </p>
 
 <input type="number" name="flag1" id="flag1-input-text" placeholder="Numbers only [0-9]+" value="0">

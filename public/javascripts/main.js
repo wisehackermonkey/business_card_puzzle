@@ -73,7 +73,7 @@ const checkAllFlags = async () => {
             play_win_fx("dersuperanton__congratulations-deep-voice.wav");
             
 
-            win_text_id.innerHTML = "You won! to collect the $100 from oran please contact at oranbusiness@gmail.com"
+            win_text_id.innerHTML = "You won! to collect the $100 from oran please contact at oranbusiness@gmail.com, with the correct values!"
             // make text blink! every .2 seconds
             var f = win_text_id
             id = setInterval(function() {
