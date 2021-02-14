@@ -1,9 +1,14 @@
 require('dotenv').config()
 var express = require('express');
 const validate = require("./validations");
-var router = express.Router();
-// explanation of regex https://regexr.com/5kd6h
+const rateLimit = require("express-rate-limit");
 
+var router = express.Router();
+const apiLimiter  = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 5 // limit each IP to 5 requests per windowMs
+  });
+// explanation of regex https://regexr.com/5kd6h
 const NUMBERS_ONLY_REGEX = /^([0-9]+)$/g
 // explanation 
 const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
@@ -21,7 +26,10 @@ const QUERY_STRING_EXISTS_REGEX = /\?.+=.*/g
 
 // NOTE: flag: is defined as a string that is hidden in a cybersecurity challenge
 // and when its found the flag is entered into a website and you see if you win.
-router.get('/', (req, res, next) => {
+router.get('/', apiLimiter, (req, res, next) => {
+    // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    // console.log(`User came in on ip: ${ip}`)
+    // console.log( req.headers)
 
     // error checking to see if you added the 3 parmaters flag1,flag2,flag3
     console.log(req.query)
@@ -72,12 +80,19 @@ router.get('/', (req, res, next) => {
             error: `Error flag3 was not found in query`
         })
     }
-
+    new Date().toISOString().
+    replace(/T/, ' ').      // replace T with a space
+    replace(/\..+/, '')
     // grab the '1337' veriable part of '?flag1=1337' for reach flag
     const flag1 = req.query?.flag1;
     const flag2 = req.query?.flag2;
     const flag3 = req.query?.flag3;
 
+    const date = new Date().toISOString().
+    replace(/T/, ' ').      // replace T with a space
+    replace(/\..+/, '')     // delete the dot and everything after
+    // https://stackoverflow.com/a/13219636
+    console.log(`${date} Users guess: ${flag1}, ${flag2}, ${flag3}`);
     // user input validation
     // check if the flag's characters are only numbers
     if (!RegExp(NUMBERS_ONLY_REGEX, 'g').test(flag1)) {
