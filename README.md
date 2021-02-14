@@ -79,6 +79,11 @@ FLAG3=111111111
 PORT=3000">>.env
 docker run -it -p 3000:3000 --env-file ./.env wisehackermonkey/businesscardpuzzle:latest
 ```
+### Update: turns out 100 requests per minute was way too lenent! Now its 5 per minute, my friend tried it and he was totally able to bruteforce it really easily.
+ ![](assets/2021-02-14-14-17-48.png)
+
+----------------
+
 # TODO
 - [x] add audio when you win via webaudio api
 - [ ] add email me when someone wins
