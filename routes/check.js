@@ -6,7 +6,7 @@ const rateLimit = require("express-rate-limit");
 var router = express.Router();
 const apiLimiter  = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100 // limit each IP to 100 requests per windowMs
+    max: 5 // limit each IP to 5 requests per windowMs
   });
 // explanation of regex https://regexr.com/5kd6h
 const NUMBERS_ONLY_REGEX = /^([0-9]+)$/g
